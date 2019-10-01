@@ -24,7 +24,8 @@ public class DeliveryInfo {
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        if (date.after(new Date()))
+            this.date = date;
     }
 
     public void setPhoneNumber(String phoneNumber) {

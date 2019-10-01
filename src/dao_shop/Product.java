@@ -1,9 +1,5 @@
 package dao_shop;
 import java.io.Serializable;
-enum ProductCategory{
-    Empty;
-
-}
 public class Product implements Serializable {
     private int id;
     private  String name;

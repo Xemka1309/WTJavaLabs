@@ -2,7 +2,7 @@ package dao_shop;
 import java.util.List;
 // TODO:implement equals,hashcode,tostring, getters, setters
 public class ShoppingCart {
-    private List<OrderItem> products;
+    private List<OrderItem> orderItems;
     private int endPrice;
 
     public void setEndPrice(int endPrice) {
@@ -14,11 +14,22 @@ public class ShoppingCart {
     }
 
     public List<OrderItem> getProducts() {
-        return products;
+        return  orderItems;
     }
 
     public void setProducts(List<OrderItem> products) {
-        this.products = products;
+        this. orderItems = products;
+    }
+    public void addOrderItem(OrderItem item){
+        if (orderItems == null)
+            return;
+        orderItems.add(item);
+    }
+    public void removeOrderItem(OrderItem item){
+        if (orderItems == null)
+            return;
+
+
     }
 
     @Override

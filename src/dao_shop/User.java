@@ -5,6 +5,9 @@ public class User {
     private String password;
     private String email;
     private int userDiscount;
+    // maybe delete
+    private ShoppingCart shoppingCart;
+
 
     public int getUserDiscount() {
         return userDiscount;
