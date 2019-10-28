@@ -1,4 +1,7 @@
-package dao_shop;
+package dao_shop.data;
+import dao_shop.beans.Order;
+
+import java.io.FileNotFoundException;
 
 public interface OrderDataWorker {
     public Order[] getOrders();
