@@ -3,7 +3,6 @@ import dao_shop.datalayer.myserialize.InvalidSerializationStringException;
 import dao_shop.datalayer.myserialize.MySerializable;
 
 import java.util.List;
-// TODO:implement equals,hashcode,tostring, getters, setters
 public class ShoppingCart implements MySerializable {
     private List<OrderItem> orderItems;
     private int endPrice;

@@ -1,5 +1,4 @@
 package dao_shop.beans;
-// TODO:implement equals,hashcode,tostring, getters, setters
 import dao_shop.datalayer.myserialize.InvalidSerializationStringException;
 import dao_shop.datalayer.myserialize.MySerializable;
 

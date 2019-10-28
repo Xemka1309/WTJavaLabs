@@ -8,33 +8,59 @@ import dao_shop.view.ClientView;
 import java.util.Scanner;
 
 public class ClientForm implements ClientView {
+    private AuthorizationForm authorizationForm;
     private User user;
+    private Scanner scanner = new Scanner(System.in);
     // Todo:заменить на синглтон
     private Controller controller = Controller.getInstance();
 
-    public ClientForm() {
+    public ClientForm(AuthorizationForm form) {
+        this.authorizationForm = form;
         this.user = controller.getCurrentUser();
     }
 
+    private void ShowCommands(){
+        System.out.println("Available commands:_______________________________");
+        System.out.println("show_comands- view all comands_________");
+        System.out.println("show_products - view all sailing products_________");
+        System.out.println("add_to_cart - add product to your shopping cart___");
+        System.out.println("show_cart - view your cart__________________");
+        System.out.println("remove_from_cart - remove product from cart_______");
+        System.out.println("create_order - create order from your cart________");
+        System.out.println("log_out - log out from shop_______________________");
+    }
     @Override
     public void ShowWelcome(){
         System.out.println("Welcome back, " + user.getLogin());
-        System.out.println("Available commands: ");
-        System.out.println("show_products - view all sailing products");
-        System.out.println("add_to_cart - add product to your shopping cart");
-        System.out.println("show_ your_cart - view your cart");
-        System.out.println("remove_from_cart - remove product from cart");
-        System.out.println("create_order - create order from your cart");
-        System.out.println("exit - logout from shop");
-        Scanner scanner = new Scanner(System.in);
-        String command = scanner.nextLine();
-        switch (command){
-            case "show_products":
-                ShowProducts();
-                break;
+        String command = "";
+        ShowCommands();
+        while (!command.equals("log_out")){
+
+            command = scanner.nextLine();
+            switch (command){
+                case "show_commands":
+                    ShowCommands();
+                    break;
+                case "show_products":
+                    ShowProducts();
+                    break;
+                case "show_cart":
+                    ShowShoppingCart();
+                    break;
+                case "add_to_cart":
+                    AddToCart();
+                    break;
+                case "log_out":
+                    LogOut();
+                    break;
+            }
         }
     }
 
+    private void LogOut(){
+        System.out.println("Goodbye America, oo, gde ne bil nikogda");
+        authorizationForm.ShowWelcome();
+    }
     @Override
     public void ShowProducts() {
         try {
@@ -47,11 +73,52 @@ public class ClientForm implements ClientView {
 
     @Override
     public void ShowShoppingCart() {
-
+        try {
+            System.out.println("Your Shopping Cart");
+            System.out.println(controller.ExecuteCommand("show_cart" +"/"+ controller.getCurrentUser().getId()));
+        } catch (CommandException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
     public void ShowOrder() {
+
+    }
+
+    @Override
+    public void AddToCart() {
+        System.out.println("Enter product id");
+        String id = scanner.nextLine();
+        System.out.println("Enter product count");
+        String count = scanner.nextLine();
+        try {
+            Integer.parseInt(id);
+            Integer.parseInt(count);
+        }
+        catch (NumberFormatException e){
+            System.out.println("Wrong integer value");
+        }
+        try {
+            System.out.println(controller.ExecuteCommand("add_to_cart/"+id+"/"+count));
+        } catch (CommandException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    @Override
+    public void RemoveFromCart() {
+
+    }
+
+    @Override
+    public void ShowOrders() {
+
+    }
+
+    @Override
+    public void CreateOrder() {
 
     }
 }

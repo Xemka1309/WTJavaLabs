@@ -15,6 +15,7 @@ public class UserServiceImpl implements UserService {
         return currentUser;
     }
 
+    //Todo:implement addorderitem,removeorderitem
     @Override
     public void addOrderItem(OrderItem item) {
 
@@ -28,6 +29,39 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addOrder(Order order) {
 
+    }
+
+    @Override
+    public ShoppingCart getCart(User user) throws ServiceException {
+        if (user == null){
+            throw new ServiceException("User was null");
+        }
+        try {
+            return FileDataWorkerFactory.getInstance().getShoppingCartDataWorker().getCart(user.getShoppingCart().getId());
+        } catch (DAOException e) {
+            throw new ServiceException(e.getMessage());
+        }
+
+    }
+
+    @Override
+    public OrderItem[] getCartItems(ShoppingCart cart) throws ServiceException {
+        try {
+            OrderItem[] items = FileDataWorkerFactory.getInstance().getOrderItemDataWorker().getItems();
+            if (items == null)
+                return null;
+            OrderItem[] result = new OrderItem[items.length];
+            int ind = 0;
+            for (int i = 0; i < items.length; i++){
+                if (items[i].getCartId() == cart.getId()){
+                    result[ind] = items[i];
+                    ind++;
+                }
+            }
+            return result;
+        } catch (DAOException e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     @Override
@@ -75,6 +109,15 @@ public class UserServiceImpl implements UserService {
             return productDataWorker.getProducts();
         } catch (DAOException e) {
             throw new ServiceException("Can't get products");
+        }
+    }
+
+    @Override
+    public int findUserId(User user) throws ServiceException {
+        try {
+            return FileDataWorkerFactory.getInstance().getUserDataWorker().findUserId(user);
+        } catch (DAOException e) {
+            throw new ServiceException(e.getMessage());
         }
     }
 }

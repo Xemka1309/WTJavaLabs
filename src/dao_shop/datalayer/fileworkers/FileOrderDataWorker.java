@@ -10,7 +10,7 @@ import java.io.*;
 
 public class FileOrderDataWorker implements OrderDataWorker {
     private String dirpass;
-    private int nextFreeId;
+    private int nextFreeId = -1;
 
     public FileOrderDataWorker(String dirpass) {
         this.dirpass = dirpass;
@@ -25,31 +25,38 @@ public class FileOrderDataWorker implements OrderDataWorker {
         }
     }
 
-    private Order[] loadOrders() throws IOException, InvalidSerializationStringException {
-        File file = new File(dirpass);
-        File[] files = file.listFiles();
-        Order[] orders = new Order[files.length];
-        FileReader fileReader;
-        StringBuilder str = new StringBuilder();
+    private Order[] loadOrders() throws IOException, InvalidSerializationStringException, DAOException {
+
+        File[] files = new File(dirpass).listFiles();
+        Order[] items = new Order[files.length];
+        FileReader reader;
+        StringBuilder builder = new StringBuilder();
+        int symb;
         for (int i = 0; i < files.length; i++) {
-            fileReader = new FileReader(files[i]);
-            orders[i] = new Order();
-            int symb = fileReader.read();
-            while (symb != -1) {
-                str.append((char) symb);
-                symb = fileReader.read();
+            symb = -1;
+            try {
+                reader = new FileReader(files[i]);
+                symb = reader.read();
+                while (symb != -1) {
+                    builder.append((char) symb);
+                    symb = reader.read();
+                }
+                items[i] = new Order();
+                items[i].DeSerialize(builder.toString());
+                builder.delete(0, builder.length());
+                if (items[i].getId() > nextFreeId )
+                    nextFreeId = items[i].getId() + 1;
+
+            } catch (IOException | InvalidSerializationStringException e) {
+                throw new DAOException("Can't get order items");
             }
-            orders[i].DeSerialize(str.toString());
-            str.delete(0, str.length());
-            fileReader.close();
+
         }
-        int maxid = orders[0].getId();
-        for (int i = 1; i < orders.length; i++) {
-            if (orders[i].getId() > maxid)
-                maxid = orders[i].getId();
+        if (nextFreeId == -1){
+            nextFreeId++;
+            return null;
         }
-        nextFreeId = maxid + 1;
-        return orders;
+        return items;
     }
 
     @Override

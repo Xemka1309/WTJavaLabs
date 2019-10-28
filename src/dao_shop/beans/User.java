@@ -3,7 +3,6 @@ package dao_shop.beans;
 import dao_shop.datalayer.myserialize.InvalidSerializationStringException;
 import dao_shop.datalayer.myserialize.MySerializable;
 
-// TODO:implement equals,hashcode,tostring, getters, setters
 public class User implements MySerializable {
     private int id;
     private String login;

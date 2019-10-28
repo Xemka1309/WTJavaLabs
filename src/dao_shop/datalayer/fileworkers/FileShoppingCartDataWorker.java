@@ -20,7 +20,7 @@ public class FileShoppingCartDataWorker implements ShoppingCartDataWorker {
 
     @Override
     public ShoppingCart[] getCarts() throws DAOException {
-        nextFreeId = 0;
+
         File[] files = new File(dirpass).listFiles();
         ShoppingCart[] carts = new ShoppingCart[files.length];
         FileReader reader;
@@ -39,16 +39,17 @@ public class FileShoppingCartDataWorker implements ShoppingCartDataWorker {
                 carts[i].DeSerialize(builder.toString());
                 builder.delete(0, builder.length());
                 if (carts[i].getId() > nextFreeId)
-                    nextFreeId = carts[i].getId();
+                    nextFreeId = carts[i].getId() + 1;
 
             } catch (IOException | InvalidSerializationStringException e) {
                throw new DAOException("Can't get carts");
             }
 
         }
-        nextFreeId++;
-        if (nextFreeId <= 1)
+        if (nextFreeId == -1){
+            nextFreeId++;
             return null;
+        }
         return carts;
     }
 

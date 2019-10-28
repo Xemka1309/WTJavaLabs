@@ -9,18 +9,32 @@ import dao_shop.servicelayer.exceptions.ServiceException;
 
 public class AdminServiceImpl implements AdminService {
     @Override
-    public Product getProduct(int id) {
-        return null;
+    public Product getProduct(int id) throws ServiceException {
+        try {
+            return FileDataWorkerFactory.getInstance().getProductDataWorker().getProduct(id);
+        } catch (DAOException e) {
+            throw new ServiceException("Can't get product from dao" + e.getMessage());
+        }
     }
 
     @Override
-    public Product[] getProducts() {
-        return new Product[0];
+    public Product[] getProducts() throws ServiceException {
+        try {
+            return FileDataWorkerFactory.getInstance().getProductDataWorker().getProducts();
+        } catch (DAOException e) {
+            throw new ServiceException("Can't get products from dao" + e.getMessage());
+        }
+    }
+
+    @Override
+    public int findUserId(User user) {
+        return 0;
     }
 
     @Override
     public void addProduct(Product product) throws ServiceException {
         try {
+            product.setId(FileDataWorkerFactory.getInstance().getProductDataWorker().nextFreeId());
             FileDataWorkerFactory.getInstance().getProductDataWorker().addProduct(product);
         } catch (DAOException e) {
             throw new ServiceException("Can't add product in dao layer");
@@ -30,11 +44,18 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void removeProduct(Product product) {
-
+        FileDataWorkerFactory.getInstance().getProductDataWorker().removeProduct(product.getId());
     }
 
     @Override
-    public void modifyProduct(Product oldProduct, Product newProduct) {
+    public void modifyProduct(Product oldProduct, Product newProduct) throws ServiceException {
+        FileDataWorkerFactory.getInstance().getProductDataWorker().removeProduct(oldProduct.getId());
+        newProduct.setId(oldProduct.getId());
+        try {
+            FileDataWorkerFactory.getInstance().getProductDataWorker().addProduct(newProduct);
+        } catch (DAOException e) {
+            throw new ServiceException("Can't modify in dao"+e.getMessage());
+        }
 
     }
 

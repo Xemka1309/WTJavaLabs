@@ -12,14 +12,14 @@ import java.io.IOException;
 
 public class FileDeliveryInfoDataWorker implements DeliveryInfoDataWorker {
     private String dirpass;
-    private int nextFreeId;
+    private int nextFreeId = -1;
 
     public FileDeliveryInfoDataWorker(String dirpass) {
         this.dirpass = dirpass;
     }
     @Override
     public DeliveryInfo[] getAllInfo() throws DAOException {
-        nextFreeId = 0;
+
         File[] files = new File(dirpass).listFiles();
         DeliveryInfo[] infos = new DeliveryInfo[files.length];
         FileReader reader;
@@ -38,14 +38,17 @@ public class FileDeliveryInfoDataWorker implements DeliveryInfoDataWorker {
                 infos[i].DeSerialize(builder.toString());
                 builder.delete(0, builder.length());
                 if (infos[i].getId() > nextFreeId)
-                    nextFreeId = infos[i].getId();
+                    nextFreeId = infos[i].getId() + 1;
 
             } catch (IOException | InvalidSerializationStringException e) {
                 throw new DAOException("Can't get all deliveryinfo");
             }
 
         }
-        nextFreeId++;
+        if (nextFreeId == -1){
+            nextFreeId++;
+            return null;
+        }
         return infos;
     }
 

@@ -1,6 +1,8 @@
 package dao_shop.controllers;
 
+import dao_shop.beans.OrderItem;
 import dao_shop.beans.Product;
+import dao_shop.beans.ShoppingCart;
 import dao_shop.beans.User;
 import dao_shop.controllers.exceptions.CommandException;
 import dao_shop.controllers.exceptions.InvalidCommandParamException;
@@ -20,6 +22,8 @@ public class Controller {
         return instance;
     }
     public String ExecuteCommand(String request) throws CommandException {
+        int id;
+        Product p;
         String command;
         String[] params = new String[0];
         if (request.indexOf('/') != -1){
@@ -72,8 +76,31 @@ public class Controller {
             case "show_products":
                 try {
                     Product[] products = ServiceFactory.getInstance().getUserService().getProducts();
+                    if (products == null){
+                        response = "No products in base\n";
+                        return response;
+                    }
                     StringBuilder responsebuilder = new StringBuilder("Products\n");
                     for (int i = 0; i < products.length; i++){
+                        responsebuilder.append("Name:" + products[i].getName() + "\n");
+                        responsebuilder.append("Description:" + products[i].getDescription() + "\n");
+                        responsebuilder.append("Price:" + products[i].getPrice() + "\n");
+                    }
+                    response = responsebuilder.toString();
+                } catch (ServiceException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case "show_products_admin":
+                try {
+                    Product[] products = ServiceFactory.getInstance().getUserService().getProducts();
+                    if (products == null){
+                        response = "No products in base\n";
+                        return response;
+                    }
+                    StringBuilder responsebuilder = new StringBuilder("Products\n");
+                    for (int i = 0; i < products.length; i++){
+                        responsebuilder.append("Id:" + products[i].getId() + "\n");
                         responsebuilder.append("Name:" + products[i].getName() + "\n");
                         responsebuilder.append("Description:" + products[i].getDescription() + "\n");
                         responsebuilder.append("Price:" + products[i].getPrice() + "\n");
@@ -90,12 +117,90 @@ public class Controller {
                 product.setName(params[1]);
                 product.setDescription(params[2]);
                 product.setPrice(Integer.parseInt(params[3]));
+
                 try {
                     ServiceFactory.getInstance().getAdminService().addProduct(product);
                 } catch (ServiceException e) {
                     System.out.println("Can't execute command exc message:" + e.getMessage());
                 }
                 response = "CREATEOK";
+                break;
+            case "remove_product":
+                if (params.length < 2)
+                    throw new NotEnoughtParamsException("Must be 1 param");
+                id = Integer.parseInt(params[1]);
+                p = new Product();
+                p.setId(id);
+                ServiceFactory.getInstance().getAdminService().removeProduct(p);
+                response="REMOVEOK";
+                break;
+            case "show_cart":{
+                if (params.length < 2)
+                    throw new NotEnoughtParamsException("Must be 1 param");
+                id = Integer.parseInt(params[1]);
+                user = new User();
+                user.setId(id);
+
+                try {
+                    ShoppingCart cart = new ShoppingCart();
+                    cart.setId(currentUser.getShoppingCart().getId());
+                    OrderItem[] items = ServiceFactory.getInstance().getUserService().getCartItems(cart);
+                    if (items == null){
+                        response = "Empty cart";
+                        return response;
+                    }
+                    StringBuilder orderitemsbuilder = new StringBuilder();
+                    cart.setEndPrice(0);
+                    for (int i = 0; i < items.length; i++){
+                        if (items[i].getCartId() == cart.getId()){
+                            orderitemsbuilder.append("Product:"+ServiceFactory
+                                    .getInstance().getAdminService().getProduct(items[i].getProductId()));
+                            orderitemsbuilder.append("Count:" + items[i].getCount());
+                            orderitemsbuilder.append("Endprice of item:" + items[i].getEndPrice());
+                            cart.setEndPrice(cart.getEndPrice() + items[i].getEndPrice());
+                        }
+                        orderitemsbuilder.append("All cart price:" + cart.getEndPrice());
+                    }
+                    response = orderitemsbuilder.toString();
+                } catch (ServiceException e) {
+                    System.out.println(e.getMessage());
+                }
+
+            }
+            case "add_to_cart":
+                if (params.length < 3)
+                    throw new NotEnoughtParamsException("Must be 3 param");
+                id = Integer.parseInt(params[1]);
+                int count = Integer.parseInt(params[2]);
+                OrderItem orderItem = new OrderItem();
+                orderItem.setCount(count);
+                try {
+                    orderItem.setEndPrice(ServiceFactory.getInstance().getAdminService().getProduct(id).getPrice() * count);
+                } catch (ServiceException e) {
+                    System.out.println(e.getMessage());
+                }
+                orderItem.setProductId(id);
+                orderItem.setCartId(currentUser.getShoppingCart().getId());
+                ServiceFactory.getInstance().getUserService().addOrderItem(orderItem);
+                response = "CARTADDOK";
+                break;
+            case "modify_product":
+                if (params.length < 5)
+                    throw new NotEnoughtParamsException("Must be 4 param");
+                id = Integer.parseInt(params[1]);
+                p = new Product();
+                p.setId(id);
+                Product newProduct= new Product();
+                newProduct.setName(params[2]);
+                newProduct.setDescription(params[3]);
+                newProduct.setPrice(Integer.parseInt(params[4]));
+                try {
+                    ServiceFactory.getInstance().getAdminService().modifyProduct(p,newProduct);
+                    response = "MODIFYOK";
+                } catch (ServiceException e) {
+                    System.out.println(e.getMessage());
+                }
+
                 break;
 
             default:

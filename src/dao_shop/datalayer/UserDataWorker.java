@@ -10,4 +10,5 @@ public interface UserDataWorker {
     public void removeUser(int id);
     public void modifyUser(int id, User newUser) throws DAOException;
     public int nextFreeId();
+    public int findUserId(User user) throws DAOException;
 }

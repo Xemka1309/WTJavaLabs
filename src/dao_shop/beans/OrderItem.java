@@ -2,7 +2,6 @@ package dao_shop.beans;
 import dao_shop.datalayer.myserialize.InvalidSerializationStringException;
 import dao_shop.datalayer.myserialize.MySerializable;
 
-// TODO:implement equals,hashcode,tostring, getters, setters
 public class OrderItem implements MySerializable {
     private int id;
     private int cartId;

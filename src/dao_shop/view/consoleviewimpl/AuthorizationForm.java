@@ -41,12 +41,12 @@ public class AuthorizationForm implements AuthorizationView {
                     String response = controller.ExecuteCommand(command);
                     System.out.println(response);
                     if (response.equals("AdminOK")){
-                        AdminForm adminForm = new AdminForm();
+                        AdminForm adminForm = new AdminForm(this);
                         adminForm.ShowWelcome();
 
                     }
                     else {
-                        ClientForm clientForm = new ClientForm();
+                        ClientForm clientForm = new ClientForm(this);
                         clientForm.ShowWelcome();
                     }
 

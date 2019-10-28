@@ -11,15 +11,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class FileProductDataWorker implements ProductDataWorker {
-    private int nextFreeId;
+    private int nextFreeId = -1;
     private String dirpass;
 
     public FileProductDataWorker(String dirpass) {
+
         this.dirpass = dirpass;
     }
 
     public Product[] getProducts() throws DAOException {
-        nextFreeId = 0;
         File[] files = new File(dirpass).listFiles();
         Product[] products = new Product[files.length];
         FileReader reader;
@@ -37,15 +37,19 @@ public class FileProductDataWorker implements ProductDataWorker {
                 products[i] = new Product();
                 products[i].DeSerialize(builder.toString());
                 builder.delete(0, builder.length());
+                reader.close();
                 if (products[i].getId() > nextFreeId)
-                    nextFreeId = products[i].getId();
+                    nextFreeId = products[i].getId() + 1;
 
             } catch (IOException | InvalidSerializationStringException e) {
                 throw new DAOException("Can't get products");
             }
 
         }
-        nextFreeId++;
+        if (nextFreeId == -1){
+            nextFreeId++;
+            return null;
+        }
         return products;
 
     }

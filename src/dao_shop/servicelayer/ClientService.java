@@ -10,4 +10,5 @@ public interface ClientService {
     public User signIn(String login, String password) throws ServiceException;
     public void signOut(String login);
     public Product[] getProducts() throws ServiceException;
+    public int findUserId(User user) throws ServiceException;
 }

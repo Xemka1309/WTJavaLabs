@@ -5,4 +5,8 @@ public interface ClientView {
     public void ShowProducts();
     public void ShowShoppingCart();
     public void ShowOrder();
+    public void AddToCart();
+    public void RemoveFromCart();
+    public void ShowOrders();
+    public void CreateOrder();
 }

@@ -1,5 +1,6 @@
 package dao_shop.datalayer.fileworkers;
 
+import dao_shop.beans.ShoppingCart;
 import dao_shop.beans.User;
 import dao_shop.datalayer.UserDataWorker;
 import dao_shop.datalayer.exceptions.DAOException;
@@ -28,9 +29,45 @@ public class FileUserDataWorker implements UserDataWorker {
         return null;
     }
 
+    private void LoadShoppingCarts(User[] users) throws DAOException {
+        File[] files = new File("ShoppingCarts").listFiles();
+        ShoppingCart[] carts = new ShoppingCart[files.length];
+        FileReader reader;
+        StringBuilder builder = new StringBuilder();
+        int symb;
+        for (int i = 0; i < files.length; i++) {
+            symb = -1;
+            try {
+                reader = new FileReader(files[i]);
+                symb = reader.read();
+                while (symb != -1) {
+                    builder.append((char) symb);
+                    symb = reader.read();
+                }
+                carts[i] = new ShoppingCart();
+                carts[i].DeSerialize(builder.toString());
+                builder.delete(0, builder.length());
+
+
+            } catch (IOException | InvalidSerializationStringException e) {
+                throw new DAOException("Can't get carts");
+            }
+
+        }
+        for (int i = 0; i < carts.length; i++){
+            for (int j = 0; j < users.length; j++ ){
+                if (users[j].getShoppingCart().getId() == carts[i].getId()){
+                    users[j].setShoppingCart(carts[i]);
+                }
+            }
+        }
+
+
+
+    }
     @Override
     public User[] getUsers() throws DAOException {
-        nextFreeId = 0;
+        //nextFreeId = 0;
         File[] files = new File(dirpass).listFiles();
         User[] users = new User[files.length];
         FileReader reader;
@@ -49,16 +86,19 @@ public class FileUserDataWorker implements UserDataWorker {
                 users[i].DeSerialize(builder.toString());
                 builder.delete(0, builder.length());
                 if (users[i].getId() > nextFreeId)
-                    nextFreeId = users[i].getId();
+                    nextFreeId = users[i].getId() + 1;
 
             } catch (IOException | InvalidSerializationStringException e) {
                 throw new DAOException("Can't get users");
             }
 
         }
-        nextFreeId++;
-        if (nextFreeId <= 1)
+        LoadShoppingCarts(users);
+        if (nextFreeId == -1){
+            nextFreeId++;
             return null;
+        }
+
         return users;
 
     }
@@ -134,5 +174,16 @@ public class FileUserDataWorker implements UserDataWorker {
             }
             return nextFreeId;
         }
+    }
+
+    @Override
+    public int findUserId(User user) throws DAOException {
+        User[] users = getUsers();
+        for (int i = 0; i < users.length; i++){
+            if (users[i].getLogin() == user.getLogin() && users[i].getPassword() == user.getPassword()
+                    && users[i].getEmail() == user.getEmail())
+                return i;
+        }
+        return -1;
     }
 }
