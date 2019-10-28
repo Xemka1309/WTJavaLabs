@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class FileShoppingCartDataWorker implements ShoppingCartDataWorker {
     private String dirpass;
-    private int nextFreeId;
+    private int nextFreeId = -1;
 
     public FileShoppingCartDataWorker(String dirpass) {
         this.dirpass = dirpass;

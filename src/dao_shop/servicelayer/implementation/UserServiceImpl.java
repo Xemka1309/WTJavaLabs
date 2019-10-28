@@ -8,8 +8,15 @@ import dao_shop.datalayer.UserDataWorker;
 import dao_shop.datalayer.exceptions.DAOException;
 import dao_shop.datalayer.fileworkers.FileDataWorkerFactory;
 import dao_shop.servicelayer.UserService;
+import dao_shop.servicelayer.exceptions.ServiceException;
 
 public class UserServiceImpl implements UserService {
+    private User currentUser;
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
     @Override
     public void addOrderItem(OrderItem item) {
 
@@ -26,7 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registration(User user) {
+    public void registration(User user) throws ServiceException {
 
         UserDataWorker userdao = FileDataWorkerFactory.getInstance().getUserDataWorker();
         user.setId(userdao.nextFreeId());
@@ -38,7 +45,7 @@ public class UserServiceImpl implements UserService {
             userdao.addUser(user);
             FileDataWorkerFactory.getInstance().getShoppingCartDataWorker().addCart(cart);
         } catch (DAOException e) {
-            e.printStackTrace();
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -46,15 +53,17 @@ public class UserServiceImpl implements UserService {
     public User signIn(String login, String password) {
         UserDataWorker userdao = FileDataWorkerFactory.getInstance().getUserDataWorker();
         try {
-            return userdao.signIn(login,password);
+            return currentUser = userdao.signIn(login,password);
         } catch (DAOException e) {
             e.printStackTrace();
             return null;
         }
+
     }
 
     @Override
     public void signOut(String login) {
+        currentUser = null;
 
     }
 }

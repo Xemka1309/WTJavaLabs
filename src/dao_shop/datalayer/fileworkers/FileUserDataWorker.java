@@ -86,6 +86,16 @@ public class FileUserDataWorker implements UserDataWorker {
 
     @Override
     public void addUser(User user) throws DAOException {
+        User[] users = getUsers();
+        if (users != null){
+            boolean unique = true;
+            for (int i = 0; i < users.length; i++){
+                if (user.getLogin().equals(users[i].getLogin()))
+                    unique = false;
+            }
+            if (!unique)
+                throw new DAOException("Not unique login");
+        }
         File file = new File(dirpass + "/" + user.getId());
         FileWriter writer;
         StringBuilder buff = new StringBuilder();

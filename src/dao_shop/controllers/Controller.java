@@ -6,6 +6,7 @@ import dao_shop.controllers.exceptions.CommandException;
 import dao_shop.controllers.exceptions.InvalidCommandParamException;
 import dao_shop.controllers.exceptions.NotEnoughtParamsException;
 import dao_shop.servicelayer.ServiceFactory;
+import dao_shop.servicelayer.exceptions.ServiceException;
 
 public class Controller {
     private final char paramDelimeter = ' ';
@@ -34,8 +35,13 @@ public class Controller {
                 newuser.setPassword(params[2]);
                 newuser.setUserDiscount(0);
                 newuser.setEmail(params[4]);
-                ServiceFactory.getInstance().getUserService().registration(newuser);
-                response = "OK";
+                try {
+                    ServiceFactory.getInstance().getUserService().registration(newuser);
+                    response = "OK";
+                } catch (ServiceException e) {
+                    response = "Not unique login";
+                }
+
                 break;
 
             default:
