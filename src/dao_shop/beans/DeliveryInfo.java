@@ -1,9 +1,7 @@
 package dao_shop.beans;
 // TODO:implement equals,hashcode,tostring, getters, setters
-import dao_shop.data.myserialize.InvalidSerializationStringException;
-import dao_shop.data.myserialize.MySerializable;
-
-import java.util.Date;
+import dao_shop.datalayer.myserialize.InvalidSerializationStringException;
+import dao_shop.datalayer.myserialize.MySerializable;
 
 public class DeliveryInfo implements MySerializable {
     private int id;

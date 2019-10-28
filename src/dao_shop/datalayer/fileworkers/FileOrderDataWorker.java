@@ -1,8 +1,9 @@
-package dao_shop.data.fileworkers;
+package dao_shop.datalayer.fileworkers;
 
 import dao_shop.beans.Order;
-import dao_shop.data.OrderDataWorker;
-import dao_shop.data.myserialize.InvalidSerializationStringException;
+import dao_shop.datalayer.OrderDataWorker;
+import dao_shop.datalayer.exceptions.DAOException;
+import dao_shop.datalayer.myserialize.InvalidSerializationStringException;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
@@ -16,14 +17,12 @@ public class FileOrderDataWorker implements OrderDataWorker {
     }
 
     @Override
-    public Order[] getOrders() {
+    public Order[] getOrders() throws DAOException {
         try {
             return loadOrders();
         } catch (IOException | InvalidSerializationStringException e) {
-            e.printStackTrace();
+            throw new DAOException("Can't get all orders");
         }
-        return null;
-
     }
 
     private Order[] loadOrders() throws IOException, InvalidSerializationStringException {
@@ -54,7 +53,7 @@ public class FileOrderDataWorker implements OrderDataWorker {
     }
 
     @Override
-    public Order getOrder(int id) {
+    public Order getOrder(int id) throws DAOException {
         Order result = new Order();
         File file = new File(dirpass + "/" + id);
         int symb;
@@ -69,13 +68,13 @@ public class FileOrderDataWorker implements OrderDataWorker {
             result.DeSerialize(builder.toString());
             reader.close();
         } catch (IOException | InvalidSerializationStringException e) {
-            e.printStackTrace();
+            throw new DAOException("Cant's get order with id:"+id);
         }
         return result;
     }
 
     @Override
-    public void addOrder(@NotNull Order order) {
+    public void addOrder(@NotNull Order order) throws DAOException {
         FileWriter writer;
         try {
             writer = new FileWriter(dirpass + "/" + order.getId());
@@ -83,16 +82,18 @@ public class FileOrderDataWorker implements OrderDataWorker {
             writer.close();
 
         } catch (IOException e) {
+            throw new DAOException("Can't add order");
         }
     }
 
     @Override
     public void removeOrder(int id) {
         File file = new File(dirpass + "/" + id);
+        file.delete();
     }
 
     @Override
-    public void modifyOrder(int id, Order newOrder) {
+    public void modifyOrder(int id, Order newOrder) throws DAOException {
         removeOrder(id);
         newOrder.setId(id);
         addOrder(newOrder);

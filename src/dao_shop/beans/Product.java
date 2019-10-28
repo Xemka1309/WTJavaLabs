@@ -1,7 +1,7 @@
 package dao_shop.beans;
 
-import dao_shop.data.myserialize.InvalidSerializationStringException;
-import dao_shop.data.myserialize.MySerializable;
+import dao_shop.datalayer.myserialize.InvalidSerializationStringException;
+import dao_shop.datalayer.myserialize.MySerializable;
 
 public class Product implements MySerializable {
     private int id;

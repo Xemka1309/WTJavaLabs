@@ -1,8 +1,9 @@
-package dao_shop.data.fileworkers;
+package dao_shop.datalayer.fileworkers;
 
 import dao_shop.beans.DeliveryInfo;
-import dao_shop.data.DeliveryInfoDataWorker;
-import dao_shop.data.myserialize.InvalidSerializationStringException;
+import dao_shop.datalayer.DeliveryInfoDataWorker;
+import dao_shop.datalayer.exceptions.DAOException;
+import dao_shop.datalayer.myserialize.InvalidSerializationStringException;
 
 import java.io.File;
 import java.io.FileReader;
@@ -17,7 +18,7 @@ public class FileDeliveryInfoDataWorker implements DeliveryInfoDataWorker {
         this.dirpass = dirpass;
     }
     @Override
-    public DeliveryInfo[] getAllInfo() {
+    public DeliveryInfo[] getAllInfo() throws DAOException {
         nextFreeId = 0;
         File[] files = new File(dirpass).listFiles();
         DeliveryInfo[] infos = new DeliveryInfo[files.length];
@@ -40,7 +41,7 @@ public class FileDeliveryInfoDataWorker implements DeliveryInfoDataWorker {
                     nextFreeId = infos[i].getId();
 
             } catch (IOException | InvalidSerializationStringException e) {
-                e.printStackTrace();
+                throw new DAOException("Can't get all deliveryinfo");
             }
 
         }
@@ -49,7 +50,7 @@ public class FileDeliveryInfoDataWorker implements DeliveryInfoDataWorker {
     }
 
     @Override
-    public DeliveryInfo getInfo(int id) {
+    public DeliveryInfo getInfo(int id) throws DAOException {
         DeliveryInfo result = new DeliveryInfo();
         File file = new File(dirpass + "/" + id);
         int symb;
@@ -64,23 +65,37 @@ public class FileDeliveryInfoDataWorker implements DeliveryInfoDataWorker {
             result.DeSerialize(builder.toString());
             reader.close();
         } catch (IOException | InvalidSerializationStringException e) {
-            e.printStackTrace();
+            throw new DAOException("cant get info for id:" + id);
         }
         return result;
     }
 
     @Override
-    public void addInfo(DeliveryInfo order) {
+    public void addInfo(DeliveryInfo info) throws DAOException {
+        File file = new File(dirpass + "/" + info.getId());
+        FileWriter writer;
+        StringBuilder buff = new StringBuilder();
+        int symb;
+        try {
+            writer = new FileWriter(file);
+            writer.write(info.Serialize());
+            writer.close();
+        } catch (IOException e) {
+            throw new DAOException("io exception");
+        }
 
     }
 
     @Override
     public void removeInfo(int id) {
-
+        File file = new File(dirpass + "/" + id);
+        file.delete();
     }
 
     @Override
-    public void modifyInfo(int id, DeliveryInfo newInfo) {
-
+    public void modifyInfo(int id, DeliveryInfo newInfo) throws DAOException{
+        removeInfo(id);
+        newInfo.setId(id);
+        addInfo(newInfo);
     }
 }

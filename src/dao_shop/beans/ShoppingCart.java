@@ -1,6 +1,6 @@
 package dao_shop.beans;
-import dao_shop.data.myserialize.InvalidSerializationStringException;
-import dao_shop.data.myserialize.MySerializable;
+import dao_shop.datalayer.myserialize.InvalidSerializationStringException;
+import dao_shop.datalayer.myserialize.MySerializable;
 
 import java.util.List;
 // TODO:implement equals,hashcode,tostring, getters, setters

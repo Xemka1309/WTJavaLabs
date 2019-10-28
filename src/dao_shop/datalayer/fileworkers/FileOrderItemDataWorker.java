@@ -1,27 +1,27 @@
-package dao_shop.data.fileworkers;
+package dao_shop.datalayer.fileworkers;
 
-import dao_shop.beans.User;
-import dao_shop.data.UserDataWorker;
-import dao_shop.data.myserialize.InvalidSerializationStringException;
+import dao_shop.beans.OrderItem;
+import dao_shop.datalayer.OrderItemDataWorker;
+import dao_shop.datalayer.exceptions.DAOException;
+import dao_shop.datalayer.myserialize.InvalidSerializationStringException;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class FileUserDataWorker implements UserDataWorker {
+public class FileOrderItemDataWorker implements OrderItemDataWorker {
     private String dirpass;
     private int nextFreeId;
 
-    public FileUserDataWorker(String dirpass) {
+    public FileOrderItemDataWorker(String dirpass) {
         this.dirpass = dirpass;
     }
-
     @Override
-    public User[] getUsers() {
+    public OrderItem[] getItems() throws DAOException {
         nextFreeId = 0;
         File[] files = new File(dirpass).listFiles();
-        User[] users = new User[files.length];
+        OrderItem[] items = new OrderItem[files.length];
         FileReader reader;
         StringBuilder builder = new StringBuilder();
         int symb;
@@ -34,25 +34,24 @@ public class FileUserDataWorker implements UserDataWorker {
                     builder.append((char) symb);
                     symb = reader.read();
                 }
-                users[i] = new User();
-                users[i].DeSerialize(builder.toString());
+                items[i] = new OrderItem();
+                items[i].DeSerialize(builder.toString());
                 builder.delete(0, builder.length());
-                if (users[i].getId() > nextFreeId)
-                    nextFreeId = users[i].getId();
+                if (items[i].getId() > nextFreeId)
+                    nextFreeId = items[i].getId();
 
             } catch (IOException | InvalidSerializationStringException e) {
-                e.printStackTrace();
+                throw new DAOException("Can't get order items");
             }
 
         }
         nextFreeId++;
-        return users;
-
+        return items;
     }
 
     @Override
-    public User getUser(int id) {
-        User result = new User();
+    public OrderItem getItem(int id) throws DAOException {
+        OrderItem result = new OrderItem();
         File file = new File(dirpass + "/" + id);
         int symb;
         StringBuilder builder = new StringBuilder();
@@ -66,33 +65,39 @@ public class FileUserDataWorker implements UserDataWorker {
             result.DeSerialize(builder.toString());
             reader.close();
         } catch (IOException | InvalidSerializationStringException e) {
-            e.printStackTrace();
+            throw new DAOException("Can't get order item with id:"+id);
         }
         return result;
     }
 
     @Override
-    public void addUser(User user) {
-        File file = new File(dirpass + "/" + user.getId());
+    public void addItem(OrderItem item) throws DAOException {
+        File file = new File(dirpass + "/" + item.getId());
         FileWriter writer;
         StringBuilder buff = new StringBuilder();
         int symb;
         try {
             writer = new FileWriter(file);
-            writer.write(user.Serialize());
+            writer.write(item.Serialize());
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new DAOException("Cant' add orderitem");
         }
-    }
-
-    @Override
-    public void removeUser(int id) {
 
     }
 
     @Override
-    public void modifyUser(int id, User newUser) {
+    public void removeItem(int id) {
+        File file = new File(dirpass + "/" + id);
+        file.delete();
+
+    }
+
+    @Override
+    public void modifyItem(int id, OrderItem newItem) throws DAOException {
+        removeItem(id);
+        newItem.setId(id);
+        addItem(newItem);
 
     }
 }

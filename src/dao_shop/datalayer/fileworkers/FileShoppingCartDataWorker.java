@@ -1,26 +1,28 @@
-package dao_shop.data.fileworkers;
+package dao_shop.datalayer.fileworkers;
 
-import dao_shop.beans.Product;
-import dao_shop.data.ProductDataWorker;
-import dao_shop.data.myserialize.InvalidSerializationStringException;
+import dao_shop.beans.ShoppingCart;
+import dao_shop.datalayer.ShoppingCartDataWorker;
+import dao_shop.datalayer.exceptions.DAOException;
+import dao_shop.datalayer.myserialize.InvalidSerializationStringException;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class FileProductDataWorker implements ProductDataWorker {
-    private int nextFreeId;
+public class FileShoppingCartDataWorker implements ShoppingCartDataWorker {
     private String dirpass;
+    private int nextFreeId;
 
-    public FileProductDataWorker(String dirpass) {
+    public FileShoppingCartDataWorker(String dirpass) {
         this.dirpass = dirpass;
     }
 
-    public Product[] getProducts() {
+    @Override
+    public ShoppingCart[] getCarts() throws DAOException {
         nextFreeId = 0;
         File[] files = new File(dirpass).listFiles();
-        Product[] products = new Product[files.length];
+        ShoppingCart[] carts = new ShoppingCart[files.length];
         FileReader reader;
         StringBuilder builder = new StringBuilder();
         int symb;
@@ -33,25 +35,24 @@ public class FileProductDataWorker implements ProductDataWorker {
                     builder.append((char) symb);
                     symb = reader.read();
                 }
-                products[i] = new Product();
-                products[i].DeSerialize(builder.toString());
+                carts[i] = new ShoppingCart();
+                carts[i].DeSerialize(builder.toString());
                 builder.delete(0, builder.length());
-                if (products[i].getId() > nextFreeId)
-                    nextFreeId = products[i].getId();
+                if (carts[i].getId() > nextFreeId)
+                    nextFreeId = carts[i].getId();
 
             } catch (IOException | InvalidSerializationStringException e) {
-                e.printStackTrace();
+               throw new DAOException("Can't get carts");
             }
 
         }
         nextFreeId++;
-        return products;
-
+        return carts;
     }
 
     @Override
-    public Product getProduct(int id) {
-        Product result = new Product();
+    public ShoppingCart getCart(int id) throws DAOException {
+        ShoppingCart result = new ShoppingCart();
         File file = new File(dirpass + "/" + id);
         int symb;
         StringBuilder builder = new StringBuilder();
@@ -65,38 +66,39 @@ public class FileProductDataWorker implements ProductDataWorker {
             result.DeSerialize(builder.toString());
             reader.close();
         } catch (IOException | InvalidSerializationStringException e) {
-            e.printStackTrace();
+           throw new DAOException("Can't get cart with id:"+id);
         }
         return result;
     }
 
     @Override
-    public void addProduct(Product product) {
-        File file = new File(dirpass + "/" + product.getId());
+    public void addCart(ShoppingCart cart) throws DAOException {
+        File file = new File(dirpass + "/" + cart.getId());
         FileWriter writer;
         StringBuilder buff = new StringBuilder();
         int symb;
         try {
             writer = new FileWriter(file);
-            writer.write(product.Serialize());
+            writer.write(cart.Serialize());
             writer.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new DAOException("Can't add cart");
         }
 
-
     }
 
     @Override
-    public void removeProduct(int id) {
+    public void removeCart(int id) {
         File file = new File(dirpass + "/" + id);
         file.delete();
+
     }
 
     @Override
-    public void modifyProduct(int id, Product newProduct) {
-        removeProduct(id);
-        newProduct.setId(id);
-        addProduct(newProduct);
+    public void modifyCart(int id, ShoppingCart newCart) throws DAOException {
+        removeCart(id);
+        newCart.setId(id);
+        addCart(newCart);
+
     }
 }

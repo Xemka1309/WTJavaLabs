@@ -1,4 +1,4 @@
-package dao_shop.data.myserialize;
+package dao_shop.datalayer.myserialize;
 
 public interface MySerializable {
     public String Serialize();

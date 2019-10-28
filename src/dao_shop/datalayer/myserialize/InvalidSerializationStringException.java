@@ -1,4 +1,4 @@
-package dao_shop.data.myserialize;
+package dao_shop.datalayer.myserialize;
 
 public class InvalidSerializationStringException extends Exception {
     public InvalidSerializationStringException(String message){

@@ -1,8 +1,8 @@
 package dao_shop.Program;
 
 import dao_shop.beans.*;
-import dao_shop.data.fileworkers.DataWorker;
-import dao_shop.data.myserialize.InvalidSerializationStringException;
+import dao_shop.datalayer.fileworkers.FileDataWorkerFactory;
+import dao_shop.datalayer.myserialize.InvalidSerializationStringException;
 
 public class Main{
     public static void main(String[] args){
@@ -53,7 +53,7 @@ public class Main{
         order.setUser(user);
         order.setEndPrice(cart.getEndPrice());
 
-        DataWorker dataWorker = DataWorker.getInstance();
+        FileDataWorkerFactory dataWorker = FileDataWorkerFactory.getInstance();
         dataWorker.getOrderDataWorker().addOrder(order);
         try{
             User newuser = new User();
