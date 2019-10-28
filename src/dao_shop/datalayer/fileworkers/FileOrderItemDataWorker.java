@@ -100,4 +100,18 @@ public class FileOrderItemDataWorker implements OrderItemDataWorker {
         addItem(newItem);
 
     }
+    @Override
+    public int nextFreeId() {
+        if (nextFreeId != -1)
+            return nextFreeId++;
+        else{
+            try {
+                getItems();
+            } catch (DAOException e) {
+                return 0;
+            }
+            return nextFreeId;
+        }
+    }
+
 }

@@ -8,4 +8,5 @@ public interface OrderDataWorker {
     public void addOrder(Order order) throws DAOException;
     public void removeOrder(int id);
     public void modifyOrder(int id, Order newOrder) throws DAOException;
+    public int nextFreeId();
 }

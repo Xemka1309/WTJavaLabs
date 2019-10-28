@@ -8,6 +8,6 @@ public interface ProductDataWorker {
     public void addProduct(Product product) throws DAOException;
     public void removeProduct(int id);
     public void modifyProduct(int id, Product newProduct) throws DAOException;
-
+    public int nextFreeId();
 
 }

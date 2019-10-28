@@ -9,4 +9,5 @@ public interface ShoppingCartDataWorker {
     public void addCart(ShoppingCart cart) throws DAOException;
     public void removeCart(int id);
     public void modifyCart(int id, ShoppingCart newCart) throws DAOException;
+    public int nextFreeId();
 }

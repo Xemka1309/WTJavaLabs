@@ -9,4 +9,5 @@ public interface DeliveryInfoDataWorker {
     public void addInfo(DeliveryInfo order) throws DAOException;
     public void removeInfo(int id);
     public void modifyInfo(int id, DeliveryInfo newInfo) throws DAOException;
+    public int nextFreeId();
 }

@@ -4,6 +4,6 @@ import dao_shop.beans.User;
 
 public interface ClientService {
     public void registration(User user);
-    public void signIn(String login, String password);
+    public User signIn(String login, String password);
     public void signOut(String login);
 }

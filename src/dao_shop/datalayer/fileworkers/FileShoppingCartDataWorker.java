@@ -47,6 +47,8 @@ public class FileShoppingCartDataWorker implements ShoppingCartDataWorker {
 
         }
         nextFreeId++;
+        if (nextFreeId <= 1)
+            return null;
         return carts;
     }
 
@@ -100,5 +102,19 @@ public class FileShoppingCartDataWorker implements ShoppingCartDataWorker {
         newCart.setId(id);
         addCart(newCart);
 
+    }
+
+    @Override
+    public int nextFreeId() {
+        if (nextFreeId != -1)
+            return nextFreeId++;
+        else{
+            try {
+                getCarts();
+            } catch (DAOException e) {
+                return 0;
+            }
+            return nextFreeId;
+        }
     }
 }

@@ -100,4 +100,17 @@ public class FileProductDataWorker implements ProductDataWorker {
         newProduct.setId(id);
         addProduct(newProduct);
     }
+    @Override
+    public int nextFreeId() {
+        if (nextFreeId != -1)
+            return nextFreeId++;
+        else{
+            try {
+                getProducts();
+            } catch (DAOException e) {
+                return 0;
+            }
+            return nextFreeId;
+        }
+    }
 }

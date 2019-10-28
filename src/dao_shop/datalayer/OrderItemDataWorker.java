@@ -9,4 +9,5 @@ public interface OrderItemDataWorker {
     public void addItem(OrderItem item) throws DAOException;
     public void removeItem(int id);
     public void modifyItem(int id, OrderItem newItem) throws DAOException;
+    public int nextFreeId();
 }

@@ -98,4 +98,17 @@ public class FileDeliveryInfoDataWorker implements DeliveryInfoDataWorker {
         newInfo.setId(id);
         addInfo(newInfo);
     }
+    @Override
+    public int nextFreeId() {
+        if (nextFreeId != -1)
+            return nextFreeId++;
+        else{
+            try {
+                getAllInfo();
+            } catch (DAOException e) {
+                return 0;
+            }
+            return nextFreeId;
+        }
+    }
 }

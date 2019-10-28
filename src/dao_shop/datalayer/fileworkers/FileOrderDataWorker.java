@@ -98,4 +98,17 @@ public class FileOrderDataWorker implements OrderDataWorker {
         newOrder.setId(id);
         addOrder(newOrder);
     }
+    @Override
+    public int nextFreeId() {
+        if (nextFreeId != -1)
+            return nextFreeId++;
+        else{
+            try {
+                getOrders();
+            } catch (DAOException e) {
+                return 0;
+            }
+            return nextFreeId;
+        }
+    }
 }

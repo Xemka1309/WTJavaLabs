@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class FileUserDataWorker implements UserDataWorker {
     private String dirpass;
-    private int nextFreeId;
+    private int nextFreeId = -1;
 
     public FileUserDataWorker(String dirpass) {
         this.dirpass = dirpass;
@@ -57,6 +57,8 @@ public class FileUserDataWorker implements UserDataWorker {
 
         }
         nextFreeId++;
+        if (nextFreeId <= 1)
+            return null;
         return users;
 
     }
@@ -108,5 +110,19 @@ public class FileUserDataWorker implements UserDataWorker {
         removeUser(id);
         newUser.setId(id);
         addUser(newUser);
+    }
+
+    @Override
+    public int nextFreeId() {
+        if (nextFreeId != -1)
+            return nextFreeId++;
+        else{
+            try {
+                getUsers();
+            } catch (DAOException e) {
+                return 0;
+            }
+            return nextFreeId;
+        }
     }
 }
