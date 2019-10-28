@@ -1,9 +1,7 @@
 package dao_shop.servicelayer.implementation;
 
-import dao_shop.beans.Order;
-import dao_shop.beans.OrderItem;
-import dao_shop.beans.ShoppingCart;
-import dao_shop.beans.User;
+import dao_shop.beans.*;
+import dao_shop.datalayer.ProductDataWorker;
 import dao_shop.datalayer.UserDataWorker;
 import dao_shop.datalayer.exceptions.DAOException;
 import dao_shop.datalayer.fileworkers.FileDataWorkerFactory;
@@ -50,13 +48,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User signIn(String login, String password) {
+    public User signIn(String login, String password) throws ServiceException {
+        if (login == null)
+            throw new IllegalArgumentException("login was null");
+        if (password == null)
+            throw new IllegalArgumentException("password was null");
         UserDataWorker userdao = FileDataWorkerFactory.getInstance().getUserDataWorker();
         try {
             return currentUser = userdao.signIn(login,password);
         } catch (DAOException e) {
-            e.printStackTrace();
-            return null;
+            throw new ServiceException("sign in not executed");
         }
 
     }
@@ -65,5 +66,15 @@ public class UserServiceImpl implements UserService {
     public void signOut(String login) {
         currentUser = null;
 
+    }
+
+    @Override
+    public Product[] getProducts() throws ServiceException {
+        ProductDataWorker productDataWorker =  FileDataWorkerFactory.getInstance().getProductDataWorker();
+        try {
+            return productDataWorker.getProducts();
+        } catch (DAOException e) {
+            throw new ServiceException("Can't get products");
+        }
     }
 }
