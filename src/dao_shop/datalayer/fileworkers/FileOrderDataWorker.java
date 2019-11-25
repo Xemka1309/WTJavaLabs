@@ -1,6 +1,9 @@
 package dao_shop.datalayer.fileworkers;
 
+import dao_shop.beans.DeliveryInfo;
 import dao_shop.beans.Order;
+import dao_shop.beans.ShoppingCart;
+import dao_shop.beans.User;
 import dao_shop.datalayer.OrderDataWorker;
 import dao_shop.datalayer.exceptions.DAOException;
 import dao_shop.datalayer.myserialize.InvalidSerializationStringException;
@@ -25,15 +28,53 @@ public class FileOrderDataWorker implements OrderDataWorker {
         }
     }
 
+    private void LoadCarts(Order[] orders) throws DAOException {
+        ShoppingCart[] carts = FileDataWorkerFactory.getInstance().getShoppingCartDataWorker().getCarts();
+        for (int i = 0; i < orders.length; i++){
+            for (int j = 0; j < carts.length; j++){
+                if (carts[j].getId() == orders[i].getShoppingCart().getId()){
+                    orders[i].setShoppingCart(carts[j]);
+                }
+            }
+        }
+    }
+    private void LoadDelivery(Order[] orders) throws DAOException {
+        DeliveryInfo[] deliveryInfos = FileDataWorkerFactory.getInstance().getDeliveryInfoDataWorker().getAllInfo();
+        for (int i = 0; i < orders.length; i++){
+            for (int j = 0; j < deliveryInfos.length; j++){
+                if (deliveryInfos[j].getId() == orders[i].getDeliveryInfo().getId()){
+                    orders[i].setDeliveryInfo(deliveryInfos[j]);
+                }
+            }
+        }
+    }
+    private void LoadUsers(Order[] orders) throws DAOException {
+        User[] users = FileDataWorkerFactory.getInstance().getUserDataWorker().getUsers();
+        for (int i = 0; i < orders.length; i++){
+            for (int j = 0; j < users.length; j++){
+                if (users[j].getId() == orders[i].getUser().getId()){
+                    orders[i].setUser(users[j]);
+                }
+            }
+        }
+
+    }
     private Order[] loadOrders() throws IOException, InvalidSerializationStringException, DAOException {
 
+        boolean notnull = false;
         File[] files = new File(dirpass).listFiles();
         Order[] items = new Order[files.length];
         FileReader reader;
         StringBuilder builder = new StringBuilder();
         int symb;
+        if (files.length < 1){
+            nextFreeId ++;
+            return null;
+        }
+
         for (int i = 0; i < files.length; i++) {
             symb = -1;
+            notnull = true;
             try {
                 reader = new FileReader(files[i]);
                 symb = reader.read();
@@ -44,7 +85,7 @@ public class FileOrderDataWorker implements OrderDataWorker {
                 items[i] = new Order();
                 items[i].DeSerialize(builder.toString());
                 builder.delete(0, builder.length());
-                if (items[i].getId() > nextFreeId )
+                if (items[i].getId() >= nextFreeId )
                     nextFreeId = items[i].getId() + 1;
 
             } catch (IOException | InvalidSerializationStringException e) {
@@ -56,7 +97,15 @@ public class FileOrderDataWorker implements OrderDataWorker {
             nextFreeId++;
             return null;
         }
-        return items;
+        if (notnull){
+            LoadUsers(items);
+            LoadDelivery(items);
+            LoadCarts(items);
+            return items;
+        }
+        else
+            return null;
+
     }
 
     @Override

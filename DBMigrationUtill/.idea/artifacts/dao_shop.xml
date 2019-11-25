@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="dao_shop">
+    <output-path>$PROJECT_DIR$/out/artifacts/dao_shop</output-path>
+    <root id="archive" name="dao_shop.jar">
+      <element id="module-output" name="FileWorkerModule" />
+    </root>
+  </artifact>
+</component>

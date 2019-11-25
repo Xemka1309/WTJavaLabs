@@ -1,4 +1,4 @@
-package dao_shop.Program;
+package dao_shop.program;
 
 import dao_shop.view.consoleviewimpl.AuthorizationForm;
 

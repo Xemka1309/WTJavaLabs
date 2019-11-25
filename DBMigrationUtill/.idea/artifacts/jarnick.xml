@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="jarnick">
+    <output-path>$PROJECT_DIR$/out/artifacts/jarnick</output-path>
+    <root id="archive" name="jarnick.jar">
+      <element id="module-output" name="DBMigrationUtill" />
+    </root>
+  </artifact>
+</component>

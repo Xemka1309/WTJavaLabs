@@ -14,47 +14,56 @@ public class AuthorizationForm implements AuthorizationView {
     @Override
     public void ShowWelcome(){
         System.out.println("Welcome, please enter command");
-        System.out.println("Available commands: create_user - registration; sign_in - authorization ");
+        System.out.println("Available commands: create_user - registration; sign_in - authorization ,exit - close program ");
         Scanner scanner = new Scanner(System.in);
-        String command = scanner.nextLine();
+        String command= "nexttry";
         Controller controller = new Controller();
-        switch (command){
-            case "create_user":
-                System.out.println("Enter params, separate with space: login, pass, confirm pass, email");
-                command = command + "/" + scanner.nextLine();
+        while (!command.equals("exit")){
+            command = scanner.nextLine();
+            switch (command){
+                case "create_user":
+                    System.out.println("Enter params, separate with /: login, pass, confirm pass, email");
+                    command = command + "/" + scanner.nextLine();
+                    try {
+                        String response = controller.ExecuteCommand(command);
+                        if (response.equals("OK"))
+                            System.out.println("Successfully create new user");
+                        else
+                            System.out.println(response);
 
-                try {
-                    String response = controller.ExecuteCommand(command);
-                    if (response.equals("OK"))
-                        System.out.println("Successfully create new user");
-                    else
+                    } catch (CommandException e) {
+                        System.out.println("Wrong command");
+                    }
+                    break;
+                case "sign_in":
+                    System.out.println("Enter params, separate with slash(/): login, pass");
+                    command = command + "/" + scanner.nextLine();
+                    try {
+                        String response = controller.ExecuteCommand(command);
                         System.out.println(response);
+                        if (response.equals("AdminOK")){
+                            AdminForm adminForm = new AdminForm(this);
+                            adminForm.ShowWelcome();
 
-                } catch (CommandException e) {
-                    System.out.println("Wrong command");
-                }
-                break;
-            case "sign_in":
-                System.out.println("Enter params, separate with slash(/): login, pass");
-                command = command + "/" + scanner.nextLine();
-                try {
-                    String response = controller.ExecuteCommand(command);
-                    System.out.println(response);
-                    if (response.equals("AdminOK")){
-                        AdminForm adminForm = new AdminForm(this);
-                        adminForm.ShowWelcome();
+                        }
+                        else {
+                            ClientForm clientForm = new ClientForm(this);
+                            clientForm.ShowWelcome();
+                        }
 
+
+                    } catch (CommandException e) {
+                        System.out.println("Wrong command");
                     }
-                    else {
-                        ClientForm clientForm = new ClientForm(this);
-                        clientForm.ShowWelcome();
-                    }
+                    break;
+                case "exit":
+                    return;
+                default:
+                    command = "nexttry";
+                    break;
+            }
 
-
-                } catch (CommandException e) {
-                    System.out.println("Wrong command");
-                }
-                break;
         }
+
     }
 }

@@ -1,8 +1,10 @@
 package dao_shop.view.consoleviewimpl;
 
+import dao_shop.beans.ShoppingCart;
 import dao_shop.beans.User;
 import dao_shop.controllers.Controller;
 import dao_shop.controllers.exceptions.CommandException;
+import dao_shop.datalayer.fileworkers.FileDataWorkerFactory;
 import dao_shop.view.ClientView;
 
 import java.util.Scanner;
@@ -52,6 +54,12 @@ public class ClientForm implements ClientView {
                     break;
                 case "log_out":
                     LogOut();
+                    break;
+                case "create_order":
+                    CreateOrder();
+                    break;
+                case "show_orders":
+                    ShowOrders();
                     break;
             }
         }
@@ -114,11 +122,32 @@ public class ClientForm implements ClientView {
 
     @Override
     public void ShowOrders() {
+        System.out.println("Your orders\n");
+        try {
+            System.out.println(controller.ExecuteCommand("show_orders"));
+        } catch (CommandException e) {
+            System.out.println("Error executing command");
+        }
 
     }
 
     @Override
     public void CreateOrder() {
+        ShowShoppingCart();
+        System.out.println("Create delivery");
+        System.out.println("Enter date of delivery");
+        String date = scanner.nextLine();
+        System.out.println("Enter adress of delivery");
+        String adress = scanner.nextLine();
+        System.out.println("Enter your phone number of delivery");
+        String phonenumber = scanner.nextLine();
+        String command = "add_order/"+user.getId()+"/"+ date+"/"+adress+"/"+phonenumber;
+        try {
+            System.out.println(controller.ExecuteCommand(command));
+        } catch (CommandException e) {
+            System.out.println("Invalid params");
+        }
+
 
     }
 }

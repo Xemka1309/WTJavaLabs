@@ -17,17 +17,31 @@ public class UserServiceImpl implements UserService {
 
     //Todo:implement addorderitem,removeorderitem
     @Override
-    public void addOrderItem(OrderItem item) {
-
+    public void addOrderItem(OrderItem item) throws ServiceException {
+        try {
+            item.setId(FileDataWorkerFactory.getInstance().getOrderItemDataWorker().nextFreeId());
+            FileDataWorkerFactory.getInstance().getOrderItemDataWorker().addItem(item);
+        } catch (DAOException e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     @Override
     public void removeOrderItem(OrderItem item) {
+        FileDataWorkerFactory.getInstance().getOrderItemDataWorker().removeItem(item.getId());
 
     }
 
     @Override
-    public void addOrder(Order order) {
+    public void addOrder(Order order) throws ServiceException {
+        if (order == null)
+            throw new ServiceException("Order wass null");
+        order.setId(FileDataWorkerFactory.getInstance().getOrderDataWorker().nextFreeId());
+        try {
+            FileDataWorkerFactory.getInstance().getOrderDataWorker().addOrder(order);
+        } catch (DAOException e) {
+            throw new ServiceException(e.getMessage());
+        }
 
     }
 
@@ -47,6 +61,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public OrderItem[] getCartItems(ShoppingCart cart) throws ServiceException {
         try {
+            boolean isnull = true;
             OrderItem[] items = FileDataWorkerFactory.getInstance().getOrderItemDataWorker().getItems();
             if (items == null)
                 return null;
@@ -56,9 +71,43 @@ public class UserServiceImpl implements UserService {
                 if (items[i].getCartId() == cart.getId()){
                     result[ind] = items[i];
                     ind++;
+                    isnull = false;
                 }
             }
+            if (isnull) return null;
             return result;
+        } catch (DAOException e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Order[] getOrders(User user) throws ServiceException {
+        try {
+            Order[] orders = FileDataWorkerFactory.getInstance().getOrderDataWorker().getOrders();
+            Order[] result = new Order[orders.length];
+            boolean nullres = true;
+            int ind = 0;
+            for (int i = 0; i< orders.length; i++){
+                if (orders[i].getUser().getId() == user.getId()){
+                    result[ind] = orders[i];
+                    ind++;
+                    nullres = false;
+                }
+            }
+            if (nullres)
+                return null;
+            return result;
+        } catch (DAOException e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void addDelivery(DeliveryInfo info) throws ServiceException {
+        info.setId(FileDataWorkerFactory.getInstance().getDeliveryInfoDataWorker().nextFreeId());
+        try {
+            FileDataWorkerFactory.getInstance().getDeliveryInfoDataWorker().addInfo(info);
         } catch (DAOException e) {
             throw new ServiceException(e.getMessage());
         }

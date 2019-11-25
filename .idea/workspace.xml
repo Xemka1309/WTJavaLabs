@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="JavaOnlineWhop:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="9a01676c-5593-4c64-9cb3-383810201a4b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Products/-1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Products/1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/JavaOnlineWhop_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Deliveryes/0" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Deliveryes/1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Deliveryes/2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OrderItems/0" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/OrderItems/1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Orders/-1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Products/2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Products/3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ShoppingCarts/2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Users/2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Orders/0" beforeDir="false" afterPath="$PROJECT_DIR$/Orders/0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/-1" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Products/0" beforeDir="false" afterPath="$PROJECT_DIR$/Products/0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dao_shop/beans/DeliveryInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/beans/DeliveryInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Products/1" beforeDir="false" afterPath="$PROJECT_DIR$/Products/1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dao_shop/Program/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/program/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dao_shop/beans/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/beans/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dao_shop/beans/OrderItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/beans/OrderItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dao_shop/beans/ShoppingCart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/beans/ShoppingCart.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dao_shop/beans/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/beans/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dao_shop/controllers/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/controllers/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dao_shop/datalayer/UserDataWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/datalayer/UserDataWorker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dao_shop/datalayer/fileworkers/FileDeliveryInfoDataWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/datalayer/fileworkers/FileDeliveryInfoDataWorker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dao_shop/datalayer/fileworkers/FileOrderDataWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/datalayer/fileworkers/FileOrderDataWorker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dao_shop/datalayer/fileworkers/FileOrderItemDataWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/datalayer/fileworkers/FileOrderItemDataWorker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dao_shop/datalayer/fileworkers/FileProductDataWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/datalayer/fileworkers/FileProductDataWorker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dao_shop/datalayer/fileworkers/FileShoppingCartDataWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/datalayer/fileworkers/FileShoppingCartDataWorker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dao_shop/datalayer/fileworkers/FileUserDataWorker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/datalayer/fileworkers/FileUserDataWorker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dao_shop/servicelayer/AdminService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/servicelayer/AdminService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dao_shop/servicelayer/ClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/servicelayer/ClientService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dao_shop/servicelayer/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/servicelayer/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dao_shop/servicelayer/implementation/AdminServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/servicelayer/implementation/AdminServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dao_shop/servicelayer/implementation/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/servicelayer/implementation/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dao_shop/view/AdminView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/view/AdminView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dao_shop/view/ClientView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/view/ClientView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dao_shop/view/consoleviewimpl/AdminForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/view/consoleviewimpl/AdminForm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dao_shop/view/consoleviewimpl/AuthorizationForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/view/consoleviewimpl/AuthorizationForm.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dao_shop/view/consoleviewimpl/ClientForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao_shop/view/consoleviewimpl/ClientForm.java" afterDir="false" />
     </list>
@@ -58,6 +66,10 @@
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -73,14 +85,14 @@
   </component>
   <component name="RunManager" selected="Application.Debug">
     <configuration name="App" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="dao_shop.Program.Main" />
+      <option name="MAIN_CLASS_NAME" value="dao_shop.program.Main" />
       <module name="JavaOnlineWhop" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration name="Debug" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="dao_shop.Program.Main" />
+      <option name="MAIN_CLASS_NAME" value="dao_shop.program.Main" />
       <module name="JavaOnlineWhop" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -109,7 +121,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
@@ -123,23 +137,23 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/dao_shop/datalayer/fileworkers/FileUserDataWorker.java</url>
-          <line>167</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dao_shop/datalayer/fileworkers/FileUserDataWorker.java</url>
           <line>129</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/dao_shop/servicelayer/implementation/UserServiceImpl.java</url>
-          <line>108</line>
+          <line>157</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/dao_shop/controllers/Controller.java</url>
-          <line>141</line>
-          <option name="timeStamp" value="19" />
+          <url>file://$PROJECT_DIR$/src/dao_shop/view/consoleviewimpl/ClientForm.java</url>
+          <line>110</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/dao_shop/view/consoleviewimpl/ClientForm.java</url>
+          <line>145</line>
+          <option name="timeStamp" value="24" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

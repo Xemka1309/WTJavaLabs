@@ -1,9 +1,6 @@
 package dao_shop.controllers;
 
-import dao_shop.beans.OrderItem;
-import dao_shop.beans.Product;
-import dao_shop.beans.ShoppingCart;
-import dao_shop.beans.User;
+import dao_shop.beans.*;
 import dao_shop.controllers.exceptions.CommandException;
 import dao_shop.controllers.exceptions.InvalidCommandParamException;
 import dao_shop.controllers.exceptions.NotEnoughtParamsException;
@@ -154,22 +151,22 @@ public class Controller {
                     for (int i = 0; i < items.length; i++){
                         if (items[i].getCartId() == cart.getId()){
                             orderitemsbuilder.append("Product:"+ServiceFactory
-                                    .getInstance().getAdminService().getProduct(items[i].getProductId()));
-                            orderitemsbuilder.append("Count:" + items[i].getCount());
-                            orderitemsbuilder.append("Endprice of item:" + items[i].getEndPrice());
+                                    .getInstance().getAdminService().getProduct(items[i].getProductId()).getName()+"\n");
+                            orderitemsbuilder.append("Count:" + items[i].getCount() + "\n");
+                            orderitemsbuilder.append("Endprice of item:" + items[i].getEndPrice()+"\n");
                             cart.setEndPrice(cart.getEndPrice() + items[i].getEndPrice());
                         }
-                        orderitemsbuilder.append("All cart price:" + cart.getEndPrice());
+                        orderitemsbuilder.append("All cart price:" + cart.getEndPrice()+"\n");
                     }
                     response = orderitemsbuilder.toString();
                 } catch (ServiceException e) {
                     System.out.println(e.getMessage());
                 }
-
+                break;
             }
             case "add_to_cart":
                 if (params.length < 3)
-                    throw new NotEnoughtParamsException("Must be 3 param");
+                    throw new NotEnoughtParamsException("Must be 2 param");
                 id = Integer.parseInt(params[1]);
                 int count = Integer.parseInt(params[2]);
                 OrderItem orderItem = new OrderItem();
@@ -181,8 +178,75 @@ public class Controller {
                 }
                 orderItem.setProductId(id);
                 orderItem.setCartId(currentUser.getShoppingCart().getId());
-                ServiceFactory.getInstance().getUserService().addOrderItem(orderItem);
+                try {
+                    ServiceFactory.getInstance().getUserService().addOrderItem(orderItem);
+                } catch (ServiceException e) {
+                    System.out.println(e.getMessage());
+                }
                 response = "CARTADDOK";
+                break;
+            case "add_order":
+                if (params.length < 5)
+                    throw new NotEnoughtParamsException("Must be 4 param");
+                DeliveryInfo info = new DeliveryInfo();
+                info.setDate(params[2]);
+                info.setAdress(params[3]);
+                info.setPhoneNumber(params[4]);
+                Order order = new Order();
+                order.setUser(currentUser);
+                order.setDeliveryInfo(info);
+                try {
+                    ServiceFactory.getInstance().getUserService().addDelivery(info);
+                } catch (ServiceException e) {
+                    System.out.println(e.getMessage());
+                }
+
+                try {
+                    order.setShoppingCart(ServiceFactory.getInstance().getUserService().getCart(currentUser));
+                    order.setEndPrice(order.getShoppingCart().getEndPrice());
+                } catch (ServiceException e) {
+                    System.out.println(e.getMessage());
+                }
+                try {
+                    ServiceFactory.getInstance().getUserService().addOrder(order);
+                    response="ORDERADDOK";
+                } catch (ServiceException e) {
+                    System.out.println(e.getMessage());
+                }
+                break;
+            case "show_orders":
+                try {
+                    Order[] orders = ServiceFactory.getInstance().getUserService().getOrders(currentUser);
+                    if (orders == null){
+                        return "You have no orders";
+                    }
+                    StringBuilder ordersbuiler = new StringBuilder();
+                    for (int i = 0; i < orders.length; i++){
+                        if (orders[i].getUser() != null){
+                            ordersbuiler.append("Order №" + i + "\n");
+                            ordersbuiler.append("Delivery:_______________\n");
+                            ordersbuiler.append("Date:" + orders[i].getDeliveryInfo().getDate() + "\n");
+                            ordersbuiler.append("Adress:" + orders[i].getDeliveryInfo().getAdress()+ "\n");
+                            ordersbuiler.append("Phone Num:" + orders[i].getDeliveryInfo().getPhoneNumber()+ "\n");
+                            ordersbuiler.append("______________________________________\n");
+                            ordersbuiler.append("Products in order\n");
+                            OrderItem[] products = ServiceFactory.getInstance().getUserService().getCartItems(orders[i].getShoppingCart());
+                            if (products == null)
+                                return "Invalid Order";
+                            for (int j = 0; j < products.length; j++){
+                                if (products[j].getCartId() == orders[i].getShoppingCart().getId()){
+                                    ordersbuiler.append("Product:" + ServiceFactory.getInstance().
+                                            getAdminService().getProduct(products[j].getProductId())+"\n");
+                                    ordersbuiler.append("Count:" + products[j].getCount() + "\n");
+                                    ordersbuiler.append("Item endprice:" + products[j].getEndPrice() + "\n");
+                                }
+                            }
+                            return ordersbuiler.toString();
+                        }
+                    }
+                } catch (ServiceException e) {
+                    System.out.println(e.getMessage());
+                }
                 break;
             case "modify_product":
                 if (params.length < 5)
