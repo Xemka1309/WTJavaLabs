@@ -7,18 +7,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9a01676c-5593-4c64-9cb3-383810201a4b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/DBMigrationUtill/.idea/artifacts/DBMigrationUtill_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/DBMigrationUtill/FileWorkerModule/src/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DBMigrationUtill/out/production/DBMigrationUtill/log4j.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DBMigrationUtill/src/log4j.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DBMigrationUtill/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/DBMigrationUtill/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DBMigrationUtill/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/DBMigrationUtill/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DBMigrationUtill/src/dbutill/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/DBMigrationUtill/src/dbutill/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DBMigrationUtill/src/dbutill/DeliveryInfoMigrationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/DBMigrationUtill/src/dbutill/DeliveryInfoMigrationManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DBMigrationUtill/src/dbutill/OrderItemMigrationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/DBMigrationUtill/src/dbutill/OrderItemMigrationManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DBMigrationUtill/src/dbutill/OrderMigrationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/DBMigrationUtill/src/dbutill/OrderMigrationManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DBMigrationUtill/src/dbutill/ProductMigrationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/DBMigrationUtill/src/dbutill/ProductMigrationManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DBMigrationUtill/src/dbutill/ShoppingCartMigrationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/DBMigrationUtill/src/dbutill/ShoppingCartMigrationManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DBMigrationUtill/src/dbutill/UserMigrationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/DBMigrationUtill/src/dbutill/UserMigrationManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DBMigrationUtill/log4j.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/DBMigrationUtill/src/dbutill/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/DBMigrationUtill/src/dbutill/Main.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
