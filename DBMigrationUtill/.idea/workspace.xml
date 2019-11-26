@@ -2,31 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e1368d23-1b9c-48c0-8b1a-62bc872505f8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/log4j.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/dbutill/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/DBMigrationUtill_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FileWorkerModule/src/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DBMigrationUtill.iml" beforeDir="false" afterPath="$PROJECT_DIR$/DBMigrationUtill.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/FileWorkerModule/META-INF/FileWorkerModule.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dbutill/DB.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/dbutill/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dbutill/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dbutill/DeliveryInfoMigrationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dbutill/DeliveryInfoMigrationManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dbutill/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dbutill/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/dbutill/MigrationFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dbutill/MigrationFactory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dbutill/OrderItemMigrationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dbutill/OrderItemMigrationManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dbutill/OrderMigrationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dbutill/OrderMigrationManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dbutill/ProductMigrationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dbutill/ProductMigrationManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dbutill/ShoppingCartMigrationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dbutill/ShoppingCartMigrationManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dbutill/UserMigrationManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dbutill/UserMigrationManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Products0" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../productserialize.sz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/dao_shop/servicelayer/implementation/AdminServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/dao_shop/servicelayer/implementation/AdminServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/dao_shop/servicelayer/implementation/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/dao_shop/servicelayer/implementation/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/dao_shop/view/consoleviewimpl/ClientForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/../src/dao_shop/view/consoleviewimpl/ClientForm.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -50,7 +37,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$/Downloads/log4j-1.2.17/apache-log4j-1.2.17/log4j-1.2.17.jar!/" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>

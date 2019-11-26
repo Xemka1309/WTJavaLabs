@@ -6,7 +6,7 @@ public class Controller {
         return instance;
     }
     public String executeCommand(String command){
-        var commandItems = command.split("/");
+        String[] commandItems = command.split("/");
         switch (commandItems[0].toUpperCase()){
             case "M":
                 switch (commandItems[1].toLowerCase()){

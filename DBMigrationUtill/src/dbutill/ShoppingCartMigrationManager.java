@@ -1,6 +1,7 @@
 package dbutill;
 
 import dao_shop.beans.ShoppingCart;
+import dao_shop.datalayer.ShoppingCartDataWorker;
 import dao_shop.datalayer.exceptions.DAOException;
 import dao_shop.datalayer.fileworkers.FileDataWorkerFactory;
 import org.apache.log4j.Logger;
@@ -40,9 +41,11 @@ public class ShoppingCartMigrationManager implements MigrationManager {
 
     @Override
     public void CreateTable(boolean reCreate){
+        if (connection == null)
+            OpenConnection();
         if (reCreate) {
             try {
-                connection.createStatement().execute("DROP TABLE ShoppingCarts");
+                connection.createStatement().execute("TRUNCATE TABLE ShoppingCarts");
             } catch (SQLException e) {
                 logger.error("SQl error" + e.getMessage() + e.getSQLState());
             }
@@ -56,13 +59,14 @@ public class ShoppingCartMigrationManager implements MigrationManager {
         } catch (SQLException e) {
             logger.error("SQl error" + e.getMessage() + e.getSQLState());
         }
+        CloseConnection();
     }
 
     @Override
     public void Migrate(){
         if (connection == null)
-            return;
-        var worker = FileDataWorkerFactory.getInstance().getShoppingCartDataWorker();
+            OpenConnection();
+        ShoppingCartDataWorker worker = FileDataWorkerFactory.getInstance().getShoppingCartDataWorker();
         ShoppingCart[] carts = new ShoppingCart[0];
         try {
             carts = worker.getCarts();
@@ -75,7 +79,7 @@ public class ShoppingCartMigrationManager implements MigrationManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        for (var cart:carts){
+        for (ShoppingCart cart:carts){
             try {
                 statement.execute(String.format("INSERT ShoppingCarts(EndPrice) VALUES (%s)",
                         cart.getEndPrice()));
@@ -83,5 +87,6 @@ public class ShoppingCartMigrationManager implements MigrationManager {
                 logger.error("SQl error" + e.getMessage() + e.getSQLState());
             }
         }
+        CloseConnection();
     }
 }

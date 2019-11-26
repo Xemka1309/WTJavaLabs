@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="DBMigrationUtill:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/DBMigrationUtill_jar</output-path>
+    <root id="archive" name="DBMigrationUtill.jar">
+      <element id="module-output" name="FileWorkerModule" />
+      <element id="module-output" name="DBMigrationUtill" />
+      <element id="extracted-dir" path="C:/Program Files (x86)/MySQL/Connector J 8.0/mysql-connector-java-8.0.18.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/log4j-1.2.17/apache-log4j-1.2.17/log4j-1.2.17.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

@@ -1,6 +1,7 @@
 package dbutill;
 
 import dao_shop.beans.Product;
+import dao_shop.datalayer.ProductDataWorker;
 import dao_shop.datalayer.exceptions.DAOException;
 import dao_shop.datalayer.fileworkers.FileDataWorkerFactory;
 import org.apache.log4j.Logger;
@@ -39,9 +40,11 @@ public class ProductMigrationManager implements MigrationManager {
 
     @Override
     public void CreateTable(boolean reCreate){
+        if (connection == null)
+            OpenConnection();
         if (reCreate) {
             try {
-                connection.createStatement().execute("DROP TABLE Products");
+                connection.createStatement().execute("TRUNCATE TABLE Products");
             } catch (SQLException e) {
                 logger.error("SQl error" + e.getMessage() + e.getSQLState());
             }
@@ -57,13 +60,14 @@ public class ProductMigrationManager implements MigrationManager {
         } catch (SQLException e) {
             logger.error("SQl error" + e.getMessage() + e.getSQLState());
         }
+        CloseConnection();
     }
 
     @Override
     public void Migrate(){
         if (connection == null)
-            return;
-        var worker = FileDataWorkerFactory.getInstance().getProductDataWorker();
+            OpenConnection();
+        ProductDataWorker worker = FileDataWorkerFactory.getInstance().getProductDataWorker();
         Product[] products = new Product[0];
         try {
             products = worker.getProducts();
@@ -76,7 +80,7 @@ public class ProductMigrationManager implements MigrationManager {
         } catch (SQLException e) {
             logger.error("SQl error" + e.getMessage() + e.getSQLState());
         }
-        for (var product:products){
+        for (Product product:products){
             try {
                 statement.execute(String.format("INSERT Products(Name,Price,Description) VALUES ('%s',%s,'%s') ",
                         product.getName(),product.getPrice(),product.getDescription()));
@@ -84,5 +88,6 @@ public class ProductMigrationManager implements MigrationManager {
                 logger.error("SQl error" + e.getMessage() + e.getSQLState());
             }
         }
+        CloseConnection();
     }
 }

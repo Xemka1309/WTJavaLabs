@@ -1,6 +1,7 @@
 package dbutill;
 
 import dao_shop.beans.User;
+import dao_shop.datalayer.UserDataWorker;
 import dao_shop.datalayer.exceptions.DAOException;
 import dao_shop.datalayer.fileworkers.FileDataWorkerFactory;
 
@@ -42,7 +43,7 @@ public class UserMigrationManager implements MigrationManager {
     public void CreateTable(boolean reCreate){
         if (reCreate) {
             try {
-                connection.createStatement().execute("DROP TABLE Users");
+                connection.createStatement().execute("TRUNCATE TABLE Users");
             } catch (SQLException e) {
                 logger.error("SQl error" + e.getMessage() + e.getSQLState());
             }
@@ -63,8 +64,8 @@ public class UserMigrationManager implements MigrationManager {
     @Override
     public void Migrate(){
         if (connection == null)
-            return;
-        var worker = FileDataWorkerFactory.getInstance().getUserDataWorker();
+            OpenConnection();
+        UserDataWorker worker = FileDataWorkerFactory.getInstance().getUserDataWorker();
         User[] users = new User[0];
         try {
             users = worker.getUsers();
@@ -77,7 +78,7 @@ public class UserMigrationManager implements MigrationManager {
         } catch (SQLException e) {
             logger.error("SQl error" + e.getMessage() + e.getSQLState());
         }
-        for (var user:users){
+        for (User user:users){
             try {
                 statement.execute(String.format("INSERT Users(Login,Password,Email,Discount) VALUES ('%s','%s','%s',%s)",
                         user.getLogin(),user.getPassword(),user.getEmail(),user.getUserDiscount()));
@@ -85,5 +86,6 @@ public class UserMigrationManager implements MigrationManager {
                 logger.error("SQl error" + e.getMessage() + e.getSQLState());
             }
         }
+        CloseConnection();
     }
 }

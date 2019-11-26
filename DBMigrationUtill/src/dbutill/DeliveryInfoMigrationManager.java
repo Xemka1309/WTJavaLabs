@@ -1,6 +1,7 @@
 package dbutill;
 
 import dao_shop.beans.DeliveryInfo;
+import dao_shop.datalayer.DeliveryInfoDataWorker;
 import dao_shop.datalayer.exceptions.DAOException;
 import dao_shop.datalayer.fileworkers.FileDataWorkerFactory;
 import org.apache.log4j.Logger;
@@ -38,9 +39,11 @@ public class DeliveryInfoMigrationManager implements MigrationManager {
 
     @Override
     public void CreateTable(boolean reCreate) {
+        if (connection == null)
+            OpenConnection();
         if (reCreate) {
             try {
-                connection.createStatement().execute("DROP TABLE DeliveryInfos");
+                connection.createStatement().execute("TRUNCATE TABLE DeliveryInfos");
             } catch (SQLException e) {
                 logger.error("SqlExeption " + e.getMessage() + e.getSQLState());
             }
@@ -56,13 +59,14 @@ public class DeliveryInfoMigrationManager implements MigrationManager {
         } catch (SQLException e) {
             logger.error("SqlExeption " + e.getMessage() + e.getSQLState());
         }
+        CloseConnection();
     }
 
     @Override
     public void Migrate() {
         if (connection == null)
-            return;
-        var worker = FileDataWorkerFactory.getInstance().getDeliveryInfoDataWorker();
+            OpenConnection();
+        DeliveryInfoDataWorker worker = FileDataWorkerFactory.getInstance().getDeliveryInfoDataWorker();
         DeliveryInfo[] infos = new DeliveryInfo[0];
         try {
             infos = worker.getAllInfo();
@@ -76,7 +80,7 @@ public class DeliveryInfoMigrationManager implements MigrationManager {
         } catch (SQLException e) {
             logger.error("Sql error" + e.getMessage() + e.getSQLState());
         }
-        for (var info:infos){
+        for (DeliveryInfo info:infos){
             try {
                 statement.execute(String.format("INSERT DeliveryInfos(Adress,Phone) VALUES ('%s','%s')",
                         info.getAdress(),info.getPhoneNumber()));
@@ -85,6 +89,6 @@ public class DeliveryInfoMigrationManager implements MigrationManager {
                 logger.error("Sql error" + e.getMessage() + e.getSQLState());
             }
         }
-
+        CloseConnection();
     }
 }

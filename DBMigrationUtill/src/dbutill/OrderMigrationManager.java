@@ -1,6 +1,7 @@
 package dbutill;
 
 import dao_shop.beans.Order;
+import dao_shop.datalayer.OrderDataWorker;
 import dao_shop.datalayer.exceptions.DAOException;
 import dao_shop.datalayer.fileworkers.FileDataWorkerFactory;
 import org.apache.log4j.Logger;
@@ -38,9 +39,11 @@ public class OrderMigrationManager implements MigrationManager {
 
     @Override
     public void CreateTable(boolean reCreate){
+        if (connection == null)
+            OpenConnection();
         if (reCreate) {
             try {
-                connection.createStatement().execute("DROP TABLE Orders");
+                connection.createStatement().execute("TRUNCATE TABLE Orders");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -58,13 +61,14 @@ public class OrderMigrationManager implements MigrationManager {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        CloseConnection();
     }
 
     @Override
     public void Migrate(){
         if (connection == null)
-            return;
-        var worker = FileDataWorkerFactory.getInstance().getOrderDataWorker();
+            OpenConnection();
+        OrderDataWorker worker = FileDataWorkerFactory.getInstance().getOrderDataWorker();
         Order[] orders = new Order[0];
         try {
             orders = worker.getOrders();
@@ -77,7 +81,7 @@ public class OrderMigrationManager implements MigrationManager {
         } catch (SQLException e) {
             logger.error("SQl error" + e.getMessage() + e.getSQLState());
         }
-        for (var order:orders){
+        for (Order order:orders){
             try {
                 statement.execute(String.format("INSERT Orders(CartId,DeliveryId,UserId,EndPrice) VALUES (%s,%s,%s,%s)",
                         order.getShoppingCart().getId(),order.getDeliveryInfo().getId(),
@@ -86,5 +90,6 @@ public class OrderMigrationManager implements MigrationManager {
                 logger.error("SQl error" + e.getMessage() + e.getSQLState());
             }
         }
+        CloseConnection();
     }
 }
