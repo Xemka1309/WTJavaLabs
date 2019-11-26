@@ -8,6 +8,7 @@ import dao_shop.servicelayer.AdminService;
 import dao_shop.servicelayer.exceptions.ServiceException;
 
 public class AdminServiceImpl implements AdminService {
+    private User currentUser;
     @Override
     public Product getProduct(int id) throws ServiceException {
         try {
@@ -27,8 +28,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public int findUserId(User user) {
-        return 0;
+    public int findUserId(User user) throws ServiceException {
+        try {
+            return FileDataWorkerFactory.getInstance().getUserDataWorker().findUserId(user);
+        } catch (DAOException e) {
+            throw new ServiceException("Can't find user");
+        }
     }
 
     @Override
@@ -61,16 +66,25 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void registration(User user) throws ServiceException {
-
+        try {
+            FileDataWorkerFactory.getInstance().getUserDataWorker().addUser(user);
+        } catch (DAOException e) {
+            throw new ServiceException("Can't register user");
+        }
     }
 
     @Override
-    public User signIn(String login, String password) {
-        return null;
+    public User signIn(String login, String password) throws ServiceException {
+        try {
+            currentUser = FileDataWorkerFactory.getInstance().getUserDataWorker().signIn(login,password);
+            return currentUser;
+        } catch (DAOException e) {
+            throw new ServiceException("Invalid data");
+        }
     }
 
     @Override
     public void signOut(String login) {
-
+        currentUser = null;
     }
 }

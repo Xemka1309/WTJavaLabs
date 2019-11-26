@@ -13,7 +13,6 @@ public class ClientForm implements ClientView {
     private AuthorizationForm authorizationForm;
     private User user;
     private Scanner scanner = new Scanner(System.in);
-    // Todo:заменить на синглтон
     private Controller controller = Controller.getInstance();
 
     public ClientForm(AuthorizationForm form) {

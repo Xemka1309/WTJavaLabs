@@ -1,51 +1,91 @@
 package dbutill;
 
+import dao_shop.beans.OrderItem;
 import dao_shop.datalayer.exceptions.DAOException;
 import dao_shop.datalayer.fileworkers.FileDataWorkerFactory;
+import org.apache.log4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class OrderItemMigrationManager implements MigrationManager {
     private Connection connection;
-    @Override
-    public void OpenConnection() throws SQLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
-        connection = DriverManager.getConnection("jdbc:mysql://localhost/epam?serverTimezone=Europe/Moscow&useSSL=false", "root", "root");
+    private final Logger logger = Logger.getLogger(OrderMigrationManager.class);
+    public void OpenConnection()  {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | ClassNotFoundException e) {
+            logger.error("Sql Driver Error:" + e.getMessage());
+        }
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/epam?serverTimezone=Europe/Moscow&useSSL=false", "root", "root");
+        } catch (SQLException e) {
+            logger.error("Sql Error:" + e.getMessage() + "Sql state" +  e.getSQLState());
+        }
     }
 
     @Override
-    public void CloseConnection() throws SQLException {
-        connection.close();
+    public void CloseConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            logger.error("Sql Error" + e.getMessage() + e.getSQLState());
+        }
     }
 
     @Override
-    public void CreateTable(boolean reCreate) throws SQLException {
-        if (reCreate)
-            connection.createStatement().execute("DROP TABLE OrderItems");
-        connection.createStatement().execute
-                ("CREATE TABLE OrderItems (" +
-                        "Id INT PRIMARY KEY AUTO_INCREMENT, " +
-                        "ProductId INT, CartId INT, "+
-                        "FOREIGN KEY (ProductId)  REFERENCES Products(Id), " +
-                        "FOREIGN KEY (CartId)  REFERENCES ShoppingCarts(Id), " +
-                        "EndPrice INT, Count INT" +
-                        ")");
+    public void CreateTable(boolean reCreate){
+        if (reCreate) {
+            try {
+                connection.createStatement().execute("DROP TABLE OrderItems");
+            } catch (SQLException e) {
+                logger.error("SQl error" + e.getMessage() + e.getSQLState());
+            }
+        }
+        try {
+            connection.createStatement().execute
+                    ("CREATE TABLE OrderItems (" +
+                            "Id INT PRIMARY KEY AUTO_INCREMENT, " +
+                            "ProductId INT, CartId INT, "+
+                            "FOREIGN KEY (ProductId)  REFERENCES Products(Id), " +
+                            "FOREIGN KEY (CartId)  REFERENCES ShoppingCarts(Id), " +
+                            "EndPrice INT, Count INT" +
+                            ")");
+            logger.info("create table OrderItems OK");
+        } catch (SQLException e) {
+            logger.error("SQl error" + e.getMessage() + e.getSQLState());
+        }
 
     }
 
     @Override
-    public void Migrate() throws SQLException, DAOException {
+    public void Migrate(){
         if (connection == null)
             return;
         var worker = FileDataWorkerFactory.getInstance().getOrderItemDataWorker();
-        var items = worker.getItems();
-        var statement = connection.createStatement();
+        OrderItem[] items = new OrderItem[0];
+        try {
+            items = worker.getItems();
+        } catch (DAOException e) {
+            logger.error("DAO error when try get OrderItems");
+        }
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+        } catch (SQLException e) {
+            logger.error("SQl error" + e.getMessage() + e.getSQLState());
+        }
         for (var item:items){
-            statement.execute(String.format("INSERT OrderItems(CartId,ProductId,EndPrice,Count) VALUES (%s,%s,%s,%s)",
-                    item.getCartId(),item.getProductId(),item.getEndPrice(),item.getCount()));
+            try {
+                statement.execute(String.format("INSERT OrderItems(CartId,ProductId,EndPrice,Count) VALUES (%s,%s,%s,%s)",
+                        item.getCartId(),item.getProductId(),item.getEndPrice(),item.getCount()));
+                logger.info("INSERT OK with id" + item.getId());
+            } catch (SQLException e) {
+                logger.error("SQl error" + e.getMessage() + e.getSQLState());
+            }
         }
 
     }

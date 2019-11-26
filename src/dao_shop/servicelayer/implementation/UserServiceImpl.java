@@ -18,6 +18,8 @@ public class UserServiceImpl implements UserService {
     //Todo:implement addorderitem,removeorderitem
     @Override
     public void addOrderItem(OrderItem item) throws ServiceException {
+        if (item == null)
+            return;
         try {
             item.setId(FileDataWorkerFactory.getInstance().getOrderItemDataWorker().nextFreeId());
             FileDataWorkerFactory.getInstance().getOrderItemDataWorker().addItem(item);
@@ -28,8 +30,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void removeOrderItem(OrderItem item) {
+        if (item == null)
+            return;
         FileDataWorkerFactory.getInstance().getOrderItemDataWorker().removeItem(item.getId());
-
     }
 
     @Override

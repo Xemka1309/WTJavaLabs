@@ -7,8 +7,8 @@ public class MigrationFactory {
     private static ShoppingCartMigrationManager shoppingCartMigrationManager = new ShoppingCartMigrationManager();
     private static DeliveryInfoMigrationManager deliveryInfoMigrationManager = new DeliveryInfoMigrationManager();
     private static UserMigrationManager userMigrationManager = new UserMigrationManager();
-    private MigrationFactory instance;
-    public MigrationFactory getInstance(){
+    private static MigrationFactory instance = new MigrationFactory();
+    public static MigrationFactory getInstance(){
         return instance;
     }
     public ProductMigrationManager getProductMigrationManager(){
